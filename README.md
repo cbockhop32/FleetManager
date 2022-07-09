@@ -1,0 +1,1 @@
+g++ -std=c++11 main.cpp fleet_functions.cpp help_functions.cpp  
