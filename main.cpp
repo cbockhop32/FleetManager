@@ -39,7 +39,7 @@ int main()
 
         cout << introPrompt << endl;
         cout << "Enter a command : ";
-        cin >> cmd;
+        getline(cin, cmd);
         
         if(cmd == "-run") {
 
@@ -76,6 +76,10 @@ int main()
                         break;
                     case 7:
                         HelpPage();
+                        break;
+
+                    case 8:
+                        cout << "Load Image URL for Car (Uses External Microservice)" << endl;
                         break;
                     default:
                         cout << "Invalid command" << endl;
