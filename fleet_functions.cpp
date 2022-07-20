@@ -9,6 +9,8 @@
 #include <thread>
 #include <variant>
 #include <typeinfo>
+#include <boost/asio.hpp>
+
 
 #include "fleet_functions.hpp"
 #include "help_functions.hpp"
@@ -16,6 +18,7 @@
 
 
 using namespace std;
+using namespace boost::asio;
 
 
 map<string,struct Car> carFleet;
@@ -152,15 +155,24 @@ void RemoveCarFromFleet(string vin)
 
 
 void ListCarsInFleet() {
-    cout << "Listing cars in fleet" << endl;
+ 
 
-    map<string,Car>::iterator it;
-    int count = 1;
+    if(carFleet.empty()) {
+        cout << "\nThere are currently no cars within your fleet.\n ";
+    } else {
+        map<string,Car>::iterator it;
+        int count = 1;
 
-    for(it = carFleet.begin(); it != carFleet.end();it++) {
-        cout << count << ".   " << it->first << "  " << it->second.year << it->second.make << "  " << it->second.model << "\n";
-        count += 1;
+        cout << "  " << "   " << "VIN" << "  " << "Year" << "  " <<"Make" << "  " << "Model" << "\n";
+
+
+        for(it = carFleet.begin(); it != carFleet.end();it++) {
+            cout << count << ".   " << it->first << "  " << it->second.year << "  " <<it->second.make << "  " << it->second.model << "\n";
+            count += 1;
+        }
     }
+
+  
 };
 
 
@@ -209,6 +221,8 @@ bool EditCarDetails(string vin) {
                 case 6 : 
                     currCar->highwayMPG = currInput;
                     break;
+                default: return false;
+
             }
         }
         // Controls which member of the Car struct it is addressing
@@ -258,6 +272,18 @@ Car *LookUpCarByVIN(std::string vin) {
 
 
 };
+
+void displayCarDetails(string vin) {
+    struct Car *currCar = LookUpCarByVIN(vin);
+
+    ostringstream outss;
+    outss << "\nDetails of car: \n\n VIN: " << currCar->vin << "\n\n Model Year: " << currCar->year 
+    << "\n Make: " << currCar->make << "\n Model: " << currCar->model  << "\n\n MSRP: " << currCar->MSRP << "\n MPG (City / Highway): "
+    << currCar->cityMpg << " / " << currCar->highwayMPG << '\n';
+
+    string displayDetails = outss.str();
+    cout << displayDetails << endl;
+}
 
 
 void HelpPage() {
@@ -324,7 +350,7 @@ void HelpPage() {
 
             // Slight delay before help menu pops up again unless you're going back to the main menu
             if(helpCmd != 0) {
-                this_thread::sleep_for(chrono::milliseconds(1500));
+                std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
             }
 
@@ -338,4 +364,31 @@ void HelpPage() {
 
 bool checkVIN(string vin) {
     return false;
+}
+
+
+void getImgURL(string vin) {
+    // error_code ec;
+
+    // io_service service;
+    // ip::tcp::socket sock(service);
+    // sock.connect({{}, 8080});
+
+    // std::string request("GET HTTP/1.1\r\n\r\n");
+    // sock.send(buffer(request));
+
+    // string response;
+
+    
+
+    // do {
+    //     char buf[1024];
+    //     size_t bytes_transferred = sock.receive(buffer(buf), {}, ec);
+    //     if (!ec) response.append(buf, buf + bytes_transferred);
+    // } while (!ec);
+
+    // cout << response << endl;
+
+
+
 }

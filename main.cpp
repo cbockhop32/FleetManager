@@ -2,8 +2,11 @@
 #include <string>
 #include <vector>
 
+
+
 #include "carFleet.hpp"
 #include "fleet_functions.hpp"
+#include "microservice.hpp"
 
 using namespace std;
 
@@ -15,7 +18,6 @@ int main()
         "Fleet Manager will allow you to easily manage your fleet of automobiles.\n"
         "It will keep track of important details about specific cars as well as provide\n"
         "important details and statistics of your entire fleet.\n\n"
-        "To see additional details about the Fleet manger, type --help\n"
         "To begin using Fleet Manager type -run \n"
         "To exit, type -exit\n";
 
@@ -26,13 +28,12 @@ int main()
         "3 :  Edit An Existing Cars Details \n"
         "4 :  List All Current Cars \n"
         "5 :  Look Up Car In Fleet By VIN \n"
-        "6 :  List Feet Statistics \n"
-        "7 :  Help Page \n";
+        "6 :  List Fleet Statistics \n"
+        "7 :  Load Image URL for Car (Uses External Microservice)\n" 
+        "8 :  Help Page \n";
 
     string cmd;
     int functionCmd;
-
-   
 
     do
     {
@@ -42,8 +43,6 @@ int main()
         getline(cin, cmd);
         
         if(cmd == "-run") {
-
-
             do{
                 cout << commandPrompt << endl;
                 cin >> functionCmd;
@@ -69,21 +68,24 @@ int main()
                         ListCarsInFleet();
                         break;
                     case 5:
-                        cout << "Looking up car by VIN" << endl;
+                        cout << "Enter VIN number of the car you would like to look up and see the details:  ";
+                        cin >> vin;
+                        displayCarDetails(vin);
+                        
                         break;
                     case 6:
                         cout << "listing fleet stastics" << endl;
                         break;
                     case 7:
-                        HelpPage();
+                        cout << "Enter VIN number of the car you would like to edit:  ";
+                        cin >> vin;
+                        getImgURL(vin);
                         break;
-
                     case 8:
-                        cout << "Load Image URL for Car (Uses External Microservice)" << endl;
+                        HelpPage();
                         break;
                     default:
                         cout << "Invalid command" << endl;
-                
                 }
 
             } while(isRunning != false);
@@ -95,7 +97,4 @@ int main()
         }
 
     } while (isRunning != false);
-    
-
-   
 }
