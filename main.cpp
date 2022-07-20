@@ -61,7 +61,7 @@ int main()
                         RemoveCarFromFleet(vin);
                         break;
                     case 3:
-                        cout << "Enter VIN number of car you would like to edit:  ";
+                        cout << "Enter VIN number of the car you would like to edit:  ";
                         cin >> vin;
                         EditCarDetails(vin);
                         break;

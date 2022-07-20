@@ -54,6 +54,12 @@ void AddCarToFleet()
         }
     }
 
+
+    if(CarExists(newCar.vin)) {
+        cout << "A car within your fleet already exists with the VIN number: " << newCar.vin << "\n\nGoing back to main menu\n";
+        return;
+    }
+
    
     for(string &currOption : optionalAttributeNames) {
         cout << "Enter value for " << currOption << ":  ";
@@ -70,15 +76,12 @@ void AddCarToFleet()
 
         // Controls which member of the Car struct it is addressing
         currIdx++;
-
-        
     }
 
         // Uppercasing strings
     transform(newCar.vin.begin(), newCar.vin.end(), newCar.vin.begin(), ::toupper);
     transform(newCar.make.begin(), newCar.make.end(), newCar.make.begin(), ::toupper);
     transform(newCar.model.begin(), newCar.model.end(), newCar.model.begin(), ::toupper);
-
 
     ostringstream outss;
     outss << "\nYou entered the following details: \n\n VIN: " << newCar.vin << "\n\n Model Year: " << newCar.year 
@@ -89,11 +92,12 @@ void AddCarToFleet()
     string reviewCmd;
 
     cout << reviewPrompt << endl;
-    cout << "Do you want to add this Vehicle to your fleet? (yes/no)" << endl;
-    cin >> reviewCmd;
+ 
 
 
     while(true) {
+        cout << "Do you want to add this Vehicle to your fleet? (yes/no)" << endl;
+        cin >> reviewCmd;
         if(reviewCmd == "yes") {
             cout << "Car has been added to your fleet" << endl;
         
@@ -105,6 +109,7 @@ void AddCarToFleet()
             break;
 
         } else {
+            cin.clear();
             continue;
         }
 
@@ -116,7 +121,33 @@ void AddCarToFleet()
 
 void RemoveCarFromFleet(string vin)
 {
-        cout <<"This is the remove car function" << endl;
+        if(!CarExists(vin)) {
+            cout << "That car does not exist. Returning to Main Menu" << endl;
+            return;
+        }
+
+        Car *carToBeRemoved = LookUpCarByVIN(vin);
+
+        cout << "\nYou want to remove the following car: "<< carToBeRemoved->year << " " << carToBeRemoved->make << " " << carToBeRemoved->model << "\n"<< endl;
+
+        string reviewCmd;
+        while(true) {
+        cout << "Do you want to remove this vehicle to your fleet? (yes/no)" << endl;
+        cin >> reviewCmd;
+        if(reviewCmd == "yes") {
+            cout << "\nCar has been removed from your fleet" << endl;
+            carFleet.erase(vin);
+            break;
+        }else if (reviewCmd == "no") {
+            cout << "Going back to main menu" << endl;
+            break;
+
+        } else {
+            cin.clear();
+            continue;
+        }
+
+    }
 };
 
 
@@ -134,9 +165,6 @@ void ListCarsInFleet() {
 
 
 bool EditCarDetails(string vin) {
-    // Have a similar interface where it goes through each data member of the Car struct but says that
-    // if you want to keep the current value, just press enter, otherwise enter new value
-
     struct Car *currCar = LookUpCarByVIN(vin);
     int currIdx = 1;
 
@@ -147,12 +175,9 @@ bool EditCarDetails(string vin) {
         return false;
     }
 
-
     cout << "\n If you would like to edit a certain value, enter a new value when prompted. If you would like to keep the current value, simply press Enter \n \n" << endl;
     
-
     cin.ignore();
-
 
     for(string &currOption : optionalAttributeNames) {
         cout << "Enter value for " << currOption << ":  ";
@@ -186,57 +211,22 @@ bool EditCarDetails(string vin) {
                     break;
             }
         }
-
         // Controls which member of the Car struct it is addressing
-        currIdx++;
-
-
-        cout << currCar->year << " " << currCar->make << " " << currCar->model <<" " << currCar->MSRP <<" " << currCar->cityMpg << " / " << currCar->highwayMPG<<endl;
-
-    
-
-        
+        currIdx++; 
     }
 
 
+    ostringstream outss;
+    outss << "\nThe car with the VIN number: " << currCar->vin << "now reflects the following: \n" << "\n\n Model Year: " << currCar->year
+    << "\n Make: " << currCar->make << "\n Model: " << currCar->model << "\n\n MSRP: " << currCar->MSRP << "\n MPG (City / Highway): "
+    << currCar->cityMpg << " / " << currCar->highwayMPG << '\n';
+
+    string editEnd = outss.str();
+
+    cout << editEnd<< endl;
+
     return true;
-    // do
-    // {
-    //     cout <<"Current Model Year: " << currCar->year << "  (Keep current by pressing 'Enter' or enter new Year):  ";
-    //     cin >> year;
-
-    //     if(year.length() == 0) {
-    //             cout << "Value Kept" << endl;
-    //     } else {
-    //             year = "new";
-    //             cout << "Value changed" << endl;
-    //     }
-
-
-    //     cout << currCar->year <<endl;
-
-    //     return true;
-        
-    // } while (true);
-    
- 
-
-
-
-
-
-    
 };
-
-
-void UpdateValue(string member, string* var, Car* currCar) {
-      if(*var == "\n") {
-            // *var = currCar->member;
-            cout << "Value Preserved" << endl;
-        } else {
-            cout << "Value changed" << endl;
-        }
-}
 
 
 
