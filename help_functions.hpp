@@ -7,3 +7,4 @@ void listAllHelp();
 void lookUpHelp();
 void fleetStatsHelp();
 void newFeatures();
+void getImgUrlHelp();

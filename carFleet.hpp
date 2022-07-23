@@ -20,6 +20,7 @@ struct Car {
     std::string MSRP;
     std::string cityMpg;
     std::string highwayMPG;
+    std::string imgURL = "None";
 
 
     std::string &operator[](size_t idx) {

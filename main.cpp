@@ -74,10 +74,10 @@ int main()
                         
                         break;
                     case 6:
-                        cout << "listing fleet stastics" << endl;
+                        fleetStats();
                         break;
                     case 7:
-                        cout << "Enter VIN number of the car you would like to edit:  ";
+                        cout << "Enter VIN number of the car you would load an image URL for:  ";
                         cin >> vin;
                         getImgURL(vin);
                         break;

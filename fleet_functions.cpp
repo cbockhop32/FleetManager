@@ -9,7 +9,7 @@
 #include <thread>
 #include <variant>
 #include <typeinfo>
-#include <boost/asio.hpp>
+
 
 
 #include "fleet_functions.hpp"
@@ -18,7 +18,6 @@
 
 
 using namespace std;
-using namespace boost::asio;
 
 
 map<string,struct Car> carFleet;
@@ -155,24 +154,19 @@ void RemoveCarFromFleet(string vin)
 
 
 void ListCarsInFleet() {
- 
-
     if(carFleet.empty()) {
         cout << "\nThere are currently no cars within your fleet.\n ";
     } else {
         map<string,Car>::iterator it;
         int count = 1;
 
-        cout << "  " << "   " << "VIN" << "  " << "Year" << "  " <<"Make" << "  " << "Model" << "\n";
-
+        cout << "  " << "   " << "VIN" << "              " << "   Year" << "  " <<"Make  " << "Model    " << "MSRP    "<<"MPG (City/Highway)" <<"\n";
 
         for(it = carFleet.begin(); it != carFleet.end();it++) {
-            cout << count << ".   " << it->first << "  " << it->second.year << "  " <<it->second.make << "  " << it->second.model << "\n";
+            cout << count << ".   " << it->first << "  " << it->second.year << "   " <<it->second.make << "  " << it->second.model << "   "<< it->second.MSRP << "  " <<it->second.cityMpg << " / " << it->second.highwayMPG <<"\n";
             count += 1;
         }
     }
-
-  
 };
 
 
@@ -279,7 +273,7 @@ void displayCarDetails(string vin) {
     ostringstream outss;
     outss << "\nDetails of car: \n\n VIN: " << currCar->vin << "\n\n Model Year: " << currCar->year 
     << "\n Make: " << currCar->make << "\n Model: " << currCar->model  << "\n\n MSRP: " << currCar->MSRP << "\n MPG (City / Highway): "
-    << currCar->cityMpg << " / " << currCar->highwayMPG << '\n';
+    << currCar->cityMpg << " / " << currCar->highwayMPG << "\n\n Image URL: " <<currCar->imgURL;
 
     string displayDetails = outss.str();
     cout << displayDetails << endl;
@@ -314,8 +308,6 @@ void HelpPage() {
             int helpCmd;
             cin >> helpCmd;
           
-          
-
             switch (helpCmd)
             {
                 case 1:
@@ -339,6 +331,9 @@ void HelpPage() {
                 case 7:
                     newFeatures();
                     break;
+                case 8:
+                    cout << "geting an img url" << endl;
+                    break;
                 case 0:
                     cout << "Going back to main menu" <<endl;
                     helpRunning = false;
@@ -361,34 +356,33 @@ void HelpPage() {
 };
 
 
+void fleetStats() {
+    if(carFleet.size() == 0) {
+        cout << "\n\nThere are no cars within your fleet" << endl;
+        return;
+    }
+
+    int totalMSRP = 0;
+    int totalCityMPG = 0;
+    int totalHighWayMPG = 0;
+
+    for(auto const& car : carFleet)
+    {
+        Car currCar = car.second;
+        totalMSRP = totalMSRP + stoi(currCar.MSRP);
+        totalCityMPG = totalCityMPG + stoi(currCar.cityMpg);
+        totalHighWayMPG = totalHighWayMPG + stoi(currCar.highwayMPG);
+
+    }   
+
+    cout << "Average MSRP (Price): $" << totalMSRP / carFleet.size() << "\n";
+    cout << "Average Fuel Economy (MPG): " << totalCityMPG / carFleet.size()<< " / " << totalHighWayMPG / carFleet.size() << "\n";
+
+};
+
 
 bool checkVIN(string vin) {
     return false;
 }
 
 
-void getImgURL(string vin) {
-    // error_code ec;
-
-    // io_service service;
-    // ip::tcp::socket sock(service);
-    // sock.connect({{}, 8080});
-
-    // std::string request("GET HTTP/1.1\r\n\r\n");
-    // sock.send(buffer(request));
-
-    // string response;
-
-    
-
-    // do {
-    //     char buf[1024];
-    //     size_t bytes_transferred = sock.receive(buffer(buf), {}, ec);
-    //     if (!ec) response.append(buf, buf + bytes_transferred);
-    // } while (!ec);
-
-    // cout << response << endl;
-
-
-
-}

@@ -66,23 +66,53 @@ void listAllHelp() {
         "\n\n This can be used to get information quickly on cars (i.e. look up VIN numbers, model years, etc.)\n"
         " If a specific vehicle attribute has been left blank by the user, it will display 'None' within the list of vehicles."
         ;
-    cout << helpInfo << endl;};
+    cout << helpInfo << endl;
+};
 
 
 
 void lookUpHelp() {
-
-    cout << "look up help" << endl;
+    string helpInfo = 
+        "\n*** LOOK UP CAR BY VIN NUMBER HELP ***\n"
+        "\n\n You can look up a car within your fleet by VIN number \n"
+        " The VIN number must be valid as-in a car exists in your fleet with that exact VIN number\n"
+        " If your fleet does not contain a car with your VIN number then it will return to the main menu\n"
+        "\n\n Once the car is found then it will display all the details/attributes associated with that car\n";
+    cout << helpInfo << endl;
 
 };
 
 
 void fleetStatsHelp() {
-    cout << "fleet help" << endl;
+    string helpInfo = 
+        "\n*** SEE CURRENT FLEET STATISTICS HELP ***\n"
+        "\n\n You can generate the current statistics accross your entire fleet. \n"
+        " You will be able to see the average MSRP (price) across all your vehichles in your fleet.\n"
+        "   This is calculated by taking each of the car's respective MSRPs and then dividing it by the number of cars in your fleet\n"
+        "\n\n You will be able to see the averge fuel economy (in miles per gallon) across all your vehichles in your fleet\n"
+        "   This will be listed by the average city MPG and then the average highway MPG\n"
+        "   This is calculated by adding up the city and highway MPG across all the cars in your fleets and then dividing it by the number of vehichles in your fleet\n";
+
+
+    cout << helpInfo << endl;
 
 };
 
 
 void newFeatures() {
-    cout << "Here we will talk about new features that were added and how they help" << endl;
-};
+    string helpInfo = 
+        "\n*** NEW FEATURES HELP ***\n"
+        "\n\n1) Edit functionality \n"
+        "   You will be able to edit your car's attributes after you have already added the car\n"
+        "   This allows you to go back correct any errors that occured when the car was first intitialized within the system\n"
+        "   Also if you choose to add a car with only the VIN number, this allows you to go back later to enter in the rest of the car's attributes\n"
+        "\n\n2) Get Image URL for car\n"
+        "   You are now able to us a microservice that when called, will go and fetch an image URL for that specific car\n"
+        "   The program will send an HTTP request to this external microservice, that microservice will then go out and fetch a URL for an image \n"
+        "   The URL will be saved as an attribute of the car that can then be used for later use. \n";
+
+    cout << helpInfo << endl;};
+
+void getImgUrlHelp() {
+    cout << "img url help" << endl;
+}
