@@ -95,8 +95,6 @@ void AddCarToFleet()
 
     cout << reviewPrompt << endl;
  
-
-
     while(true) {
         cout << "Do you want to add this Vehicle to your fleet? (yes/no)" << endl;
         cin >> reviewCmd;
@@ -372,7 +370,6 @@ void fleetStats() {
         totalMSRP = totalMSRP + stoi(currCar.MSRP);
         totalCityMPG = totalCityMPG + stoi(currCar.cityMpg);
         totalHighWayMPG = totalHighWayMPG + stoi(currCar.highwayMPG);
-
     }   
 
     cout << "Average MSRP (Price): $" << totalMSRP / carFleet.size() << "\n";
