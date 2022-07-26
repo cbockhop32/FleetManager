@@ -10,12 +10,9 @@
 #include <variant>
 #include <typeinfo>
 
-
-
 #include "fleet_functions.hpp"
 #include "help_functions.hpp"
 #include "carFleet.hpp"
-
 
 using namespace std;
 
@@ -24,25 +21,43 @@ map<string,struct Car> carFleet;
 vector<string> optionalAttributeNames ={"Model Year", "Make", "Model", "MSRP (Price)", "City MPG", "Highway MPG"};
 
 
-
-
-
 void AddCarToFleet()
 {
-    string vin;
     int currIdx = 1;
     Car newCar;
-    int vinTries = 0;
+    Car* newCarPtr = &newCar;
   
-
     cout <<"Please enter the following details to add a car to your fleet: \n" << endl;
+    getVinPrompt(newCarPtr);
 
-    while(true) {
+    if(CarExists(newCar.vin)) {
+        cout << "A car within your fleet already exists with the VIN number: " << newCar.vin << "\n\nGoing back to main menu\n";
+        return;
+    }
+    getCarAttributes(*newCarPtr);
+    uppercaseCarAttributes(newCarPtr);
+
+    ostringstream outss;
+    outss << "\nYou entered the following details: \n\n VIN: " << newCar.vin << "\n\n Model Year: " << newCar.year 
+    << "\n Make: " << newCar.make << "\n Model: " << newCar.model << "\n\n MSRP: " << newCar.MSRP << "\n MPG (City / Highway): "
+    << newCar.cityMpg << " / " << newCar.highwayMPG << '\n';
+
+    string reviewPrompt = outss.str();
+    cout << reviewPrompt << endl;
+    addCarToFleetPrompt(newCarPtr);
+};
+
+// **** Add Car Helper Functions ****
+void getVinPrompt(Car* newCar) {
+    cout << "entered vin p[rompt" << endl;
+    string vin;
+    int vinTries = 0;
+
+     while(true) {
         cout <<"Please Enter the VIN Number of the Vehicle (Required):";
         if(vinTries == 0) {
             cin.ignore();           
         }
-    
         getline(cin, vin);
 
         if(vin.empty()) {
@@ -51,21 +66,17 @@ void AddCarToFleet()
             vinTries++;
             continue;
         } else {
-            newCar.vin = vin;
+            newCar->vin = vin;
             break;
         }
     }
+}
 
+void getCarAttributes(Car& newCar){
+    int currIdx = 1;
 
-    if(CarExists(newCar.vin)) {
-        cout << "A car within your fleet already exists with the VIN number: " << newCar.vin << "\n\nGoing back to main menu\n";
-        return;
-    }
-
-   
     for(string &currOption : optionalAttributeNames) {
         cout << "Enter value for " << currOption << ":  ";
-
         string currInput;
         getline(cin, currInput); 
 
@@ -73,65 +84,52 @@ void AddCarToFleet()
             newCar[currIdx] = "None";
             cin.clear();
         } else {
-             newCar[currIdx] = currInput;
+            newCar[currIdx] = currInput;
         }
-
         // Controls which member of the Car struct it is addressing
         currIdx++;
     }
+}
 
-        // Uppercasing strings
-    transform(newCar.vin.begin(), newCar.vin.end(), newCar.vin.begin(), ::toupper);
-    transform(newCar.make.begin(), newCar.make.end(), newCar.make.begin(), ::toupper);
-    transform(newCar.model.begin(), newCar.model.end(), newCar.model.begin(), ::toupper);
+void uppercaseCarAttributes(Car* newCar) {
+    transform(newCar->vin.begin(), newCar->vin.end(), newCar->vin.begin(), ::toupper);
+    transform(newCar->make.begin(), newCar->make.end(), newCar->make.begin(), ::toupper);
+    transform(newCar->model.begin(), newCar->model.end(), newCar->model.begin(), ::toupper);
+}
 
-    ostringstream outss;
-    outss << "\nYou entered the following details: \n\n VIN: " << newCar.vin << "\n\n Model Year: " << newCar.year 
-    << "\n Make: " << newCar.make << "\n Model: " << newCar.model << "\n\n MSRP: " << newCar.MSRP << "\n MPG (City / Highway): "
-    << newCar.cityMpg << " / " << newCar.highwayMPG << '\n';
+void addCarToFleetPrompt(Car* newCar) {
+        string reviewCmd;
 
-    string reviewPrompt = outss.str();
-    string reviewCmd;
-
-    cout << reviewPrompt << endl;
- 
-    while(true) {
+        while(true) {
         cout << "Do you want to add this Vehicle to your fleet? (yes/no)" << endl;
         cin >> reviewCmd;
         if(reviewCmd == "yes") {
             cout << "Car has been added to your fleet" << endl;
-        
-
-            carFleet.insert(pair<string, Car>(newCar.vin, newCar));
+            carFleet.insert(pair<string, Car>(newCar->vin, *newCar));
             break;
         }else if (reviewCmd == "no") {
             cout << "Going back to main menu" << endl;
             break;
-
         } else {
             cin.clear();
             continue;
         }
-
     }
 
-
-
-};
+}
 
 void RemoveCarFromFleet(string vin)
 {
-        if(!CarExists(vin)) {
-            cout << "That car does not exist. Returning to Main Menu" << endl;
-            return;
-        }
+    if(!CarExists(vin)) {
+        cout << "That car does not exist. Returning to Main Menu" << endl;
+        return;
+    }
+    Car *carToBeRemoved = LookUpCarByVIN(vin);
 
-        Car *carToBeRemoved = LookUpCarByVIN(vin);
+    cout << "\nYou want to remove the following car: "<< carToBeRemoved->year << " " << carToBeRemoved->make << " " << carToBeRemoved->model << "\n"<< endl;
 
-        cout << "\nYou want to remove the following car: "<< carToBeRemoved->year << " " << carToBeRemoved->make << " " << carToBeRemoved->model << "\n"<< endl;
-
-        string reviewCmd;
-        while(true) {
+    string reviewCmd;
+    while(true) {
         cout << "Do you want to remove this vehicle to your fleet? (yes/no)" << endl;
         cin >> reviewCmd;
         if(reviewCmd == "yes") {
@@ -146,7 +144,6 @@ void RemoveCarFromFleet(string vin)
             cin.clear();
             continue;
         }
-
     }
 };
 
@@ -157,7 +154,6 @@ void ListCarsInFleet() {
     } else {
         map<string,Car>::iterator it;
         int count = 1;
-
         cout << "  " << "   " << "VIN" << "              " << "   Year" << "  " <<"Make  " << "Model    " << "MSRP    "<<"MPG (City/Highway)" <<"\n";
 
         for(it = carFleet.begin(); it != carFleet.end();it++) {
@@ -217,10 +213,8 @@ bool EditCarDetails(string vin) {
 
             }
         }
-        // Controls which member of the Car struct it is addressing
         currIdx++; 
     }
-
 
     ostringstream outss;
     outss << "\nThe car with the VIN number: " << currCar->vin << "now reflects the following: \n" << "\n\n Model Year: " << currCar->year
@@ -234,10 +228,6 @@ bool EditCarDetails(string vin) {
     return true;
 };
 
-
-
-
-
 bool CarExists(std::string vin) {
     map<string,Car>::iterator it;
 
@@ -246,13 +236,11 @@ bool CarExists(std::string vin) {
             return true;
         }
     }
-
     return false;
 
 }
 
 Car *LookUpCarByVIN(std::string vin) {
-    
     map<string,Car>::iterator it;
 
     for(it = carFleet.begin(); it != carFleet.end();it++) {
@@ -261,8 +249,6 @@ Car *LookUpCarByVIN(std::string vin) {
         }
     } 
     return nullptr;
-
-
 };
 
 void displayCarDetails(string vin) {
@@ -279,7 +265,6 @@ void displayCarDetails(string vin) {
 
 
 void HelpPage() {
-
         bool helpRunning = true;
 
         string help = 
@@ -295,11 +280,10 @@ void HelpPage() {
         "5 :  Look Up Car In Fleet By VIN \n"
         "6 :  Fleet Statistics and Calculation Methodology \n"
         "7 :  Info On New Features That Have Been Added \n"
+        "8 :  Retrieve a URL To An Image of a Specific Car\n"
+
         "0 :  Go Back To Main Menu\n\n"
         "Enter a menu option: ";
-
-
-        
 
         do{
             cout << helpCommands;
@@ -330,7 +314,7 @@ void HelpPage() {
                     newFeatures();
                     break;
                 case 8:
-                    cout << "geting an img url" << endl;
+                    getImgUrlHelp();
                     break;
                 case 0:
                     cout << "Going back to main menu" <<endl;
@@ -338,7 +322,6 @@ void HelpPage() {
                     break;
                 default:
                     cout << "Invalid command" << endl;
-            
             }
 
             // Slight delay before help menu pops up again unless you're going back to the main menu
@@ -346,11 +329,7 @@ void HelpPage() {
                 std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
             }
-
-        } while(helpRunning != false);
-
-
-        
+        } while(helpRunning != false);     
 };
 
 
@@ -378,8 +357,6 @@ void fleetStats() {
 };
 
 
-bool checkVIN(string vin) {
-    return false;
-}
+
 
 

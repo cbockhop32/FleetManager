@@ -114,5 +114,16 @@ void newFeatures() {
     cout << helpInfo << endl;};
 
 void getImgUrlHelp() {
-    cout << "img url help" << endl;
-}
+       string helpInfo = 
+        "\n*** RETRIEVE IMAGE URL HELP ***\n"
+        "\n\nFleet manager can use an external microservice that will take in a Make and Model and will retrieve a URL to \n"
+        "an image of your car. That URL will be saved inside the database.\n\n"
+        "In a seperate terminal, have the microservice running by typing 'npm start'. The microservice should output that the server\n"
+        "is running on port 3000.\n"
+        "\n\nOnce you have done that, you can go to the main menu and selection option (7). This will then prompt you for a VIN number of a car within your fleet\n"
+        "Type in the VIN number and Fleet Manger will now send an HTTP GET request to the server that was initialized on port 3000.\n"
+        "The microservice will find the Wikipedia page for the specific car that you passed in and then retrieve a URL to an image of that car.\n"
+        "The URL is automatically saved within Fleet Manager and attached to the respective car\n";
+
+    cout << helpInfo << endl;
+};
