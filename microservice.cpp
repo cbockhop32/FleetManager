@@ -24,11 +24,8 @@ void getImgURL(string vin) {
     string make = requestedCar->make;
     string model = requestedCar->model;
 
-    string* makePtr = &make;
-    string* modelPtr = &model;
-
-    fixStringCasing(*makePtr);
-    fixStringCasing(*modelPtr);
+    fixStringCasing(make);
+    fixStringCasing(model);
 
     ostringstream oss;
     oss <<"GET /?content=" << make << "_" << model <<" HTTP/1.1\r\n\r\n";

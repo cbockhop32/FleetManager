@@ -27,7 +27,6 @@ void addHelp() {
 };
 
 
-
 void removeHelp() {
        string helpInfo = 
        "\n*** REMOVE A CAR FROM THE FLEET HELP ***\n"

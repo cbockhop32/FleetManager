@@ -34,7 +34,7 @@ void AddCarToFleet()
         cout << "A car within your fleet already exists with the VIN number: " << newCar.vin << "\n\nGoing back to main menu\n";
         return;
     }
-    getCarAttributes(*newCarPtr);
+    getCarAttributes(newCar);
     uppercaseCarAttributes(newCarPtr);
 
     ostringstream outss;
@@ -49,7 +49,6 @@ void AddCarToFleet()
 
 // **** Add Car Helper Functions ****
 void getVinPrompt(Car* newCar) {
-    cout << "entered vin p[rompt" << endl;
     string vin;
     int vinTries = 0;
 
@@ -266,10 +265,6 @@ void displayCarDetails(string vin) {
 
 void HelpPage() {
         bool helpRunning = true;
-
-        string help = 
-        "\n ~~ Fleet Manager - Help Page ~~ \n\n"
-        "Below is a list of commands that you can enter in order to get more information on certain functionalities\n";
         
         string helpCommands = 
         "\n\n Enter the following numbers to get more info: \n\n"
@@ -353,7 +348,6 @@ void fleetStats() {
 
     cout << "Average MSRP (Price): $" << totalMSRP / carFleet.size() << "\n";
     cout << "Average Fuel Economy (MPG): " << totalCityMPG / carFleet.size()<< " / " << totalHighWayMPG / carFleet.size() << "\n";
-
 };
 
 
