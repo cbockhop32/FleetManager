@@ -6,7 +6,6 @@
 
 #include "carFleet.hpp"
 #include "fleet_functions.hpp"
-#include "microservice.hpp"
 
 using namespace std;
 
@@ -77,11 +76,6 @@ int main()
                         fleetStats();
                         break;
                     case 7:
-                        cout << "Enter VIN number of the car you would load an image URL for:  ";
-                        cin >> vin;
-                        getImgURL(vin);
-                        break;
-                    case 8:
                         HelpPage();
                         break;
                     default:

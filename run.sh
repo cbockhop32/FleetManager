@@ -1,3 +1,3 @@
 #! /bin/sh
 
-cd build ; ./proj1
+cd cmake/build ; ./fleet_manager
