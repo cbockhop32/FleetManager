@@ -28,8 +28,7 @@ int main()
         "4 :  List All Current Cars \n"
         "5 :  Look Up Car In Fleet By VIN \n"
         "6 :  List Fleet Statistics \n"
-        "7 :  Load Image URL for Car (Uses External Microservice)\n" 
-        "8 :  Help Page \n";
+        "7 :  Help Page \n";
 
     string cmd;
     int functionCmd;
