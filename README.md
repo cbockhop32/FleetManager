@@ -1,10 +1,9 @@
 
-# Compiling Fleet Manager
+## Use ./configure.sh to compile with CMake
 
-g++ -std=c++11 -o main2 main.cpp fleet_functions.cpp help_functions.cpp -lboost_system
+## Use ./build.sh to build with make
 
-
-g++ -std=c++11 -o main2 -I /opt/homebrew/include -L /opt/homebrew/lib -lboost_system main.cpp fleet_functions.cpp help_functions.cpp microservice.cpp 
+## Use ./run.sh to run the program
 
 
 
